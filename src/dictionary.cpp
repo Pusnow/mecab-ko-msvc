@@ -172,7 +172,9 @@ bool Dictionary::assignUserDictionaryCosts(
   property.set_charset(from.c_str());
 
   if (!matrix.openText(matrix_file.c_str()) &&
-      !matrix.open(matrix_bin_file.c_str())) {
+      !matrix.open(
+          matrix_bin_file.c_str(),
+          param.get<std::string>("white-space-penalty-infos").c_str())) {
     matrix.set_left_size(1);
     matrix.set_right_size(1);
   }
@@ -282,7 +284,9 @@ bool Dictionary::compile(const Param &param,
   }
 
   if (!matrix.openText(matrix_file.c_str()) &&
-      !matrix.open(matrix_bin_file.c_str())) {
+      !matrix.open(
+          matrix_bin_file.c_str(),
+          param.get<std::string>("white-space-penalty-infos").c_str())) {
     matrix.set_left_size(1);
     matrix.set_right_size(1);
   }

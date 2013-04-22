@@ -16,10 +16,13 @@ namespace MeCab {
 bool Connector::open(const Param &param) {
   const std::string filename = create_filename
       (param.get<std::string>("dicdir"), MATRIX_FILE);
-  return open(filename.c_str());
+  return open(
+      filename.c_str(),
+      param.get<std::string>("white-space-penalty-infos").c_str());
 }
 
 bool Connector::open(const char* filename,
+                     const char* white_space_penalty_info,
                      const char *mode) {
   CHECK_FALSE(cmmap_->open(filename, mode))
       << "cannot open: " << filename;
@@ -38,11 +41,49 @@ bool Connector::open(const char* filename,
       << "file size is invalid: " << filename;
 
   matrix_ = cmmap_->begin() + 2;
+
+  set_white_space_penalty_infos(white_space_penalty_info);
   return true;
+}
+
+void Connector::set_white_space_penalty_infos(const char *info_str) {
+  if (info_str == NULL) return;
+
+  char s[512];
+  snprintf(s, sizeof(s), "%s", info_str);
+
+  const size_t max_num_white_space_penalty_pos_ids = 64;
+  char *col[max_num_white_space_penalty_pos_ids];
+  const size_t n = tokenizeCSV(s, col, max_num_white_space_penalty_pos_ids);
+  for (size_t i = 0; i < n; i += 2) {
+    white_space_penalty_infos_.push_back(
+        WhiteSpacePenaltyInfo(
+            (unsigned short )strtoul(col[i], NULL, 0),
+            (int )strtol(col[i+1], NULL, 0)));
+  }
 }
 
 void Connector::close() {
   cmmap_->close();
+}
+
+int Connector::cost(const Node *lNode, const Node *rNode) const {
+  return matrix_[lNode->rcAttr + lsize_ * rNode->lcAttr] +
+      rNode->wcost +
+      get_white_space_penalty_cost(rNode);
+}
+
+int Connector::get_white_space_penalty_cost(const Node *rNode) const {
+  if (rNode->rlength == rNode->length) {
+    // has no space
+    return 0;
+  }
+  for (size_t i = 0; i < white_space_penalty_infos_.size(); ++i) {
+    if (rNode->posid == white_space_penalty_infos_[i].posid_) {
+      return this->white_space_penalty_infos_[i].penalty_cost_;
+    }
+  }
+  return 0;
 }
 
 bool Connector::openText(const char *filename) {
