@@ -18,11 +18,11 @@ bool Connector::open(const Param &param) {
       (param.get<std::string>("dicdir"), MATRIX_FILE);
   return open(
       filename.c_str(),
-      param.get<std::string>("white-space-penalty-infos").c_str());
+      param.get<std::string>("left-space-penalty-factor").c_str());
 }
 
 bool Connector::open(const char* filename,
-                     const char* white_space_penalty_info,
+                     const char* left_space_penalty_factor_str,
                      const char *mode) {
   CHECK_FALSE(cmmap_->open(filename, mode))
       << "cannot open: " << filename;
@@ -42,22 +42,22 @@ bool Connector::open(const char* filename,
 
   matrix_ = cmmap_->begin() + 2;
 
-  set_white_space_penalty_infos(white_space_penalty_info);
+  set_left_space_penalty_factor(left_space_penalty_factor_str);
   return true;
 }
 
-void Connector::set_white_space_penalty_infos(const char *info_str) {
-  if (info_str == NULL) return;
+void Connector::set_left_space_penalty_factor(const char *factor_str) {
+  if (factor_str == NULL) return;
 
   char s[512];
-  snprintf(s, sizeof(s), "%s", info_str);
+  snprintf(s, sizeof(s), "%s", factor_str);
 
-  const size_t max_num_white_space_penalty_pos_ids = 64;
-  char *col[max_num_white_space_penalty_pos_ids];
-  const size_t n = tokenizeCSV(s, col, max_num_white_space_penalty_pos_ids);
+  const size_t max_num_space_penalty_pos_ids = 64;
+  char *col[max_num_space_penalty_pos_ids];
+  const size_t n = tokenizeCSV(s, col, max_num_space_penalty_pos_ids);
   for (size_t i = 0; i < n; i += 2) {
-    white_space_penalty_infos_.push_back(
-        WhiteSpacePenaltyInfo(
+    left_space_penalty_factor_.push_back(
+        SpacePenalty(
             (unsigned short )strtoul(col[i], NULL, 0),
             (int )strtol(col[i+1], NULL, 0)));
   }
@@ -70,17 +70,17 @@ void Connector::close() {
 int Connector::cost(const Node *lNode, const Node *rNode) const {
   return matrix_[lNode->rcAttr + lsize_ * rNode->lcAttr] +
       rNode->wcost +
-      get_white_space_penalty_cost(rNode);
+      get_space_penalty_cost(rNode);
 }
 
-int Connector::get_white_space_penalty_cost(const Node *rNode) const {
+int Connector::get_space_penalty_cost(const Node *rNode) const {
   if (rNode->rlength == rNode->length) {
     // has no space
     return 0;
   }
-  for (size_t i = 0; i < white_space_penalty_infos_.size(); ++i) {
-    if (rNode->posid == white_space_penalty_infos_[i].posid_) {
-      return this->white_space_penalty_infos_[i].penalty_cost_;
+  for (size_t i = 0; i < left_space_penalty_factor_.size(); ++i) {
+    if (rNode->posid == left_space_penalty_factor_[i].posid_) {
+      return this->left_space_penalty_factor_[i].penalty_cost_;
     }
   }
   return 0;

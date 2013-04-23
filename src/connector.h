@@ -23,19 +23,19 @@ class Connector {
   whatlog         what_;
 
   // mecab-ko
-  class WhiteSpacePenaltyInfo {
+  class SpacePenalty {
     public:
       unsigned short posid_;
       int penalty_cost_;
-      WhiteSpacePenaltyInfo(unsigned short posid, int penalty_cost)
+      SpacePenalty(unsigned short posid, int penalty_cost)
         : posid_(posid)
         , penalty_cost_(penalty_cost)
       {}
   };
-  std::vector<WhiteSpacePenaltyInfo>white_space_penalty_infos_;
+  std::vector<SpacePenalty>left_space_penalty_factor_;
 
-  void set_white_space_penalty_infos(const char *info_str);
-  int get_white_space_penalty_cost(const Node *rNode) const;
+  void set_left_space_penalty_factor(const char *factor_str);
+  int get_space_penalty_cost(const Node *rNode) const;
 
  public:
 
