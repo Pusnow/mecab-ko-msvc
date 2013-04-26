@@ -3027,7 +3027,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=mecab
- VERSION=0.996
+ VERSION=0.996/ko-0.9.0
 
 
 cat >>confdefs.h <<_ACEOF
