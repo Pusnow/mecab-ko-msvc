@@ -181,14 +181,14 @@ bool Dictionary::assignUserDictionaryCosts(
 
   cid.open(left_id_file.c_str(),
            right_id_file.c_str(), &config_iconv);
-  CHECK_DIE(cid.left_size()  == matrix.left_size() &&
-            cid.right_size() == matrix.right_size())
+  CHECK_DIE(cid.left_size()  == matrix.right_size() &&
+            cid.right_size() == matrix.left_size())
       << "Context ID files("
       << left_id_file
       << " or "
       << right_id_file << " may be broken: "
-      << cid.left_size() << " " << matrix.left_size() << " "
-      << cid.right_size() << " " << matrix.right_size();
+      << cid.left_size() << " " << matrix.right_size() << " "
+      << cid.right_size() << " " << matrix.left_size();
 
   std::ofstream ofs(output);
   CHECK_DIE(ofs) << "permission denied: " << output;
@@ -356,8 +356,8 @@ bool Dictionary::compile(const Param &param,
           cid.reset(new ContextID);
           cid->open(left_id_file.c_str(),
                     right_id_file.c_str(), &config_iconv);
-          CHECK_DIE(cid->left_size()  == matrix.left_size() &&
-                    cid->right_size() == matrix.right_size())
+          CHECK_DIE(cid->left_size()  == matrix.right_size() &&
+                    cid->right_size() == matrix.left_size())
               << "Context ID files("
               << left_id_file
               << " or "
