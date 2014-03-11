@@ -1,5 +1,8 @@
 # mecab-ko ChangeLog
 
+## mecab-ko-0.9.1 (mecab-0.996)
+  - 새로운 사전 추가시 에러나는 버그 수정. (좌/우문맥ID 찾기와 비용계산이 자동으로 안되던 버그 수정.)
+
 ## mecab-ko-0.9.0 (mecab-0.996)
 
   - MeCab 0.996 기반
