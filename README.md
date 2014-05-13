@@ -1,6 +1,6 @@
 # mecab-ko 소개
 
-[mecab-ko](https://bitbucket.org/bibreen/mecab-ko)는 [은전한닢 프로젝트](http://eunjeon.blogspot.kr/)에서 사용하기 위한 [MeCab](http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html)의 fork 프로젝트 입니다.
+[mecab-ko](https://bitbucket.org/eunjeon/mecab-ko)는 [은전한닢 프로젝트](http://eunjeon.blogspot.kr/)에서 사용하기 위한 [MeCab](http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html)의 fork 프로젝트 입니다.
 
 최소한의 변경으로 한국어의 특성에 맞는 기능을 추가하는 것이 목표입니다.
 
@@ -48,7 +48,7 @@ MeCab의 사전 설정(dicrc)에서 다음과 같이 설정합니다.
 
 ## mecab-ko 설치
 
-  [mecab-ko 다운로드 페이지](https://bitbucket.org/bibreen/mecab-ko/downloads)에서 최신 버전의 소스를 다운 받고 설치합니다. tar.gz 압축을 해제하고 일반적인 자유 소프트웨어와 같은 순서로 설치할 수 있습니다.
+  [mecab-ko 다운로드 페이지](https://bitbucket.org/eunjeon/mecab-ko/downloads)에서 최신 버전의 소스를 다운 받고 설치합니다. tar.gz 압축을 해제하고 일반적인 자유 소프트웨어와 같은 순서로 설치할 수 있습니다.
 
     :::text
     $ tar zxfv mecab-ko-XX.tar.gz
@@ -67,7 +67,7 @@ MeCab의 사전 설정(dicrc)에서 다음과 같이 설정합니다.
 
 ## 한국어 사전(mecab-ko-dic)의 설치와 사용
 
-  [mecab-ko-dic](https://bitbucket.org/bibreen/mecab-ko-dic)의 설명을 참조하시기 바랍니다.
+  [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic)의 설명을 참조하시기 바랍니다.
 
 # 라이센스
 
