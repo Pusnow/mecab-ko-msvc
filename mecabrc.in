@@ -3,7 +3,7 @@
 ;
 ; $Id: mecabrc.in,v 1.3 2006/05/29 15:36:08 taku-ku Exp $;
 ;
-dicdir =  @prefix@/lib/mecab/dic/ipadic
+dicdir =  @prefix@/lib/mecab/dic/mecab-ko-dic
 
 ; userdic = /home/foo/bar/user.dic
 
