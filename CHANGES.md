@@ -1,5 +1,11 @@
 # mecab-ko ChangeLog
 
+## mecab-ko-0.9.2 (mecab-0.996)
+
+  - 오류 수정
+    - mecabrc의 dicdir 값을 '@prefix@/lib/mecab/dic/mecab-ko-dic' 으로 변경
+    - Java swig 메모리릭 오류 수정
+
 ## mecab-ko-0.9.1 (mecab-0.996)
   - 새로운 사전 추가시 에러나는 버그 수정. (좌/우문맥ID 찾기와 비용계산이 자동으로 안되던 버그 수정.)
 
