@@ -14,6 +14,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <iterator>
 
 #ifdef __CYGWIN__
 #define _GLIBCXX_EXPORT_TEMPLATE
@@ -86,6 +87,7 @@
 #define WPATH_FORCE(path) (MeCab::Utf8ToWide(path).c_str())
 #define WPATH(path) (path)
 #else
+#define WPATH_FORCE(path) (MeCab::Utf8ToWide(path).c_str())
 #define WPATH(path) WPATH_FORCE(path)
 #endif
 #else
