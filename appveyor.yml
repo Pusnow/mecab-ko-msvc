@@ -11,3 +11,24 @@ build_script:
     - cd src
     - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x64
     - nmake -f Makefile.x64.msvc.in
+after_build:
+    - cd %APPVEYOR_BUILD_FOLDER%\
+    - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\*.dll
+    - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\*.exe
+    - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\*.lib
+    - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\mecab.h
+    - ls
+    - pwd
+deploy:
+  description: 'MeCab-Ko-MSVC'
+  provider: GitHub
+  auth_token:
+    secure: OmfpZhJdq1DA5Yl/KrpU0VVV6jCM7DQ/8gH7IH1Fld9TtRvnHCTLxJSTXVgsOEmJ
+  artifacts:
+    - path: mecab-ko-msvc.zip
+      name: MeCab-Ko-MSVC
+      type: zip         
+  draft: false
+  prerelease: false
+  on:
+    appveyor_repo_tag: true
