@@ -8,7 +8,7 @@ DEFS =  -D_CRT_SECURE_NO_DEPRECATE -DMECAB_USE_THREAD \
         -DDLL_EXPORT -DHAVE_GETENV -DHAVE_WINDOWS_H -DDIC_VERSION=102 \
         -DVERSION="\"0.996-ko-0.9.2\"" -DPACKAGE="\"mecab\"" \
         -DUNICODE -D_UNICODE \
-        -DMECAB_DEFAULT_RC="\"c:\mecab\etc\mecabrc\""
+        -DMECAB_DEFAULT_RC="\"c:\mecab\mecabrc\""
 INC = -I. -I..
 DEL = del
 
