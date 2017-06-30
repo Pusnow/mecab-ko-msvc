@@ -325,7 +325,7 @@ bool load_dictionary_resource(Param *param) {
   }
 #endif
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(__CYGWIN__) && 0
   HKEY hKey;
   scoped_fixed_array<wchar_t, BUF_SIZE> v;
   DWORD vt;
