@@ -17,17 +17,13 @@ after_build:
     - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\*.exe
     - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\*.lib
     - 7z a mecab-ko-msvc.zip %APPVEYOR_BUILD_FOLDER%\src\mecab.h
-    - ls
-    - pwd
+
 deploy:
   description: 'MeCab-Ko-MSVC'
   provider: GitHub
   auth_token:
     secure: OmfpZhJdq1DA5Yl/KrpU0VVV6jCM7DQ/8gH7IH1Fld9TtRvnHCTLxJSTXVgsOEmJ
-  artifacts:
-    - path: mecab-ko-msvc.zip
-      name: MeCab-Ko-MSVC
-      type: zip         
+  artifact: /.*\.zip/      
   draft: false
   prerelease: false
   on:
