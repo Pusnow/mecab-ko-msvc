@@ -1,3 +1,23 @@
+# mecab-ko-msvc
+
+mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual C++ 로 빌드하는 프로젝트입니다.
+
+## 설치
+
+* 실행 컴퓨터에 맞는 [최신버전](https://github.com/Pusnow/mecab-ko-msvc/releases/latest) 을 다운로드 받습니다. x86, x64 버전을 제공합니다.
+* `-r` 옵션과 `-d` 옵션을 사용할 경우는 문제가 없지만 최적의 환경을 위해 `C:\mecab` 폴더에 압축을 해제합니다.
+* 사전을 설치합니다. [mecab-ko-dic-msvc] (https://github.com/Pusnow/mecab-ko-dic-msvc) 를 사용할 경우 프로젝트 페이지의 지시를 따르면 됩니다.
+
+## 빌드 정보
+
+* mecab-ko-msvc 는 [Appveyor](https://www.appveyor.com)를 이용합니다.
+* 빌드 과정은 [Appveyor 페이지](https://ci.appveyor.com/project/Pusnow/mecab-ko-msvc) 에 기록되어 있습니다.
+* 개인적으로 빌드를 하고 싶으신 분은 [appveyor.yml](https://github.com/Pusnow/mecab-ko-msvc/blob/master/appveyor.yml) 을 참고하시기 바랍니다.
+
+
+
+
+
 # mecab-ko 소개
 
 [mecab-ko](https://bitbucket.org/eunjeon/mecab-ko)는 [은전한닢 프로젝트](http://eunjeon.blogspot.kr/)에서 사용하기 위한 [MeCab](http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html)의 fork 프로젝트 입니다.
