@@ -8,6 +8,12 @@ mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual 
 * `-r` 옵션과 `-d` 옵션을 사용할 경우는 문제가 없지만 최적의 환경을 위해 `C:\mecab` 폴더에 압축을 해제합니다.
 * 사전을 설치합니다. [mecab-ko-dic-msvc] (https://github.com/Pusnow/mecab-ko-dic-msvc) 를 사용할 경우 프로젝트 페이지의 지시를 따르면 됩니다.
 
+## 사용 정보
+
+* 현재 버전에서는 Windows cmd에서 출력이 제대로 되지 않습니다. `mecab.exe -o output.txt input.txt` 명령으로 파일로 출력하거나 [mecab-python-msvc](https://github.com/Pusnow/mecab-python-msvc) 를 이용해서 Python에서 사용해야 합니다. `input.txt` 파일은 메모장에서 저장할 경우 인코딩을 **UTF-8**으로 지정해야 합니다.
+* 메모장을 이용하여 저장하고 사용할 경우 출력의 앞 부분에 필요없는 `SY,*,*,*,*,*,*,*` 가 나타나게 됩니다. 이는 메모장이 파일을 저장할 경우 [BOM](https://ko.wikipedia.org/wiki/바이트_순서_표식)을 추가하기 때문입니다. 다른 에디터를 사용하여 BOM 없이 저장을 한다면 문제가 생기지 않습니다.
+
+
 ## 빌드 정보
 
 * mecab-ko-msvc 는 [Appveyor](https://www.appveyor.com)를 이용합니다.
