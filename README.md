@@ -21,6 +21,8 @@ mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual 
 * 개인적으로 빌드를 하고 싶으신 분은 [appveyor.yml](https://github.com/Pusnow/mecab-ko-msvc/blob/master/appveyor.yml) 을 참고하시기 바랍니다.
 
 
+## 참고 자료
+* http://qiita.com/tobesan/items/6b6f3a025fdd177ef52a
 
 
 
