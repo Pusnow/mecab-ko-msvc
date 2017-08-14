@@ -8,7 +8,7 @@ mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual 
 
 * 실행 컴퓨터에 맞는 [최신버전](https://github.com/Pusnow/mecab-ko-msvc/releases/latest) 을 다운로드 받습니다. x86, x64 버전을 제공합니다.
 * `-r` 옵션과 `-d` 옵션을 사용할 경우는 문제가 없지만 최적의 환경을 위해 `C:\mecab` 폴더에 압축을 해제합니다.
-* 사전을 설치합니다. [mecab-ko-dic-msvc] (https://github.com/Pusnow/mecab-ko-dic-msvc) 를 사용할 경우 프로젝트 페이지의 지시를 따르면 됩니다.
+* 사전을 설치합니다. [mecab-ko-dic-msvc](https://github.com/Pusnow/mecab-ko-dic-msvc) 를 사용할 경우 프로젝트 페이지의 지시를 따르면 됩니다.
 
 ## 사용 정보
 
