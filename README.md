@@ -26,7 +26,11 @@ mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual 
 ## 참고 자료
 * http://qiita.com/tobesan/items/6b6f3a025fdd177ef52a
 
+## 관련 프로젝트
 
+* [Mecab-Ko-Dic-MSVC](https://github.com/Pusnow/mecab-ko-dic-msvc)
+* [Mecab-Python-MSVC](https://github.com/Pusnow/mecab-python-msvc)
+* [Mecab-Java-MSVC](https://github.com/Pusnow/mecab-java-msvc)
 
 # mecab-ko 소개
 
