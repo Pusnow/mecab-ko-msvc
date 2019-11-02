@@ -27,7 +27,7 @@ deploy:
   description: 'MeCab-Ko-MSVC'
   provider: GitHub
   auth_token:
-    secure: OmfpZhJdq1DA5Yl/KrpU0VVV6jCM7DQ/8gH7IH1Fld9TtRvnHCTLxJSTXVgsOEmJ
+    secure: 3dyLxnmyBTMNPbsgWOuwarwBotzIDjkf9y8vs8DoxBhYIVI2IiCDO6pNmuCadgCs
   artifact: MeCab-KO-MSVC    
   draft: false
   prerelease: false
