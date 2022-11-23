@@ -18,8 +18,6 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{ matrix.arch }}
-      - name: test
-        run: ls
       - name: Build
         run: nmake -f Makefile.${{ matrix.arch }}.msvc.in
         working-directory: ${{ github.workspace }}/src
