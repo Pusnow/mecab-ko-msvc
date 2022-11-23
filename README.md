@@ -1,6 +1,6 @@
 # mecab-ko-msvc
 
-[![Build status](https://ci.appveyor.com/api/projects/status/rejdl9runoofxg2x/branch/master?svg=true)](https://ci.appveyor.com/project/Pusnow/mecab-ko-msvc/branch/master)
+[![Build](https://github.com/Pusnow/mecab-ko-msvc/actions/workflows/build.yml/badge.svg)](https://github.com/Pusnow/mecab-ko-msvc/actions/workflows/build.yml)
 
 mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual C++ 로 빌드하는 프로젝트입니다.
 
