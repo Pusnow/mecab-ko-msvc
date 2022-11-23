@@ -1,0 +1,32 @@
+name: build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch:
+          - x64
+          - x86
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{ matrix.arch }}
+      - name: test
+        run: ls
+      - name: Build
+        run: nmake -f Makefile.${{ matrix.arch }}.msvc.in
+        working-directory: ${{ github.workspace }}/src
+      - name: 7z
+        run: 7z a mecab-ko-msvc-${{ matrix.arch }}.zip *.dll *.exe *.lib mecab.h
+        working-directory: ${{ github.workspace }}/src
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: src/mecab-ko-msvc-${{ matrix.arch }}.zip
