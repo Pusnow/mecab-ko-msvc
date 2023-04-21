@@ -239,19 +239,13 @@ lib_sources = [
 ]
 libmecab = both_libraries('mecab', lib_sources, dependencies: deps, install : true)
 
-programs = [
-    'mecab',
-    'mecab-dict-index',
-    'mecab-dict-gen',
-    'mecab-cost-train',
-    'mecab-system-eval',
-    'mecab-test-gen',
-]
 
-
-foreach program: programs
-    executable(program, 'src/@0@.cpp'.format(program), link_with: libmecab.get_static_lib(), install : true)
-endforeach
+mecab = executable('mecab', 'src/mecab.cpp', link_with: libmecab.get_static_lib(), install : true)
+mecab_dict_index = executable('mecab-dict-index', 'src/mecab-dict-index.cpp', link_with: libmecab.get_static_lib(), install : true)
+mecab_dict_gen = executable('mecab-dict-gen', 'src/mecab-dict-gen.cpp', link_with: libmecab.get_static_lib(), install : true)
+mecab_cost_train = executable('mecab-cost-train', 'src/mecab-cost-train.cpp', link_with: libmecab.get_static_lib(), install : true)
+mecab_system_eval = executable('mecab-system-eval', 'src/mecab-system-eval.cpp', link_with: libmecab.get_static_lib(), install : true)
+mecab_test_gen = executable('mecab-test-gen', 'src/mecab-test-gen.cpp', link_with: libmecab.get_static_lib(), install : true)
 
 
 mecabrc_conf = configuration_data()
@@ -265,3 +259,14 @@ configure_file(input : 'mecabrc.in',
 
 install_headers('src/mecab.h')
 install_man('man/mecab.1')
+
+
+python_exe = find_program('python3', 'python')
+
+run_command(python_exe, '-m', 'zipfile', '-e', meson.source_root() / 'mecab-ko-dic.zip', meson.build_root(), check:true)
+mecab_ko_dic = custom_target('mecab_ko_dic',
+  output : 'mecab-ko-dic',
+  depends : [mecab_dict_index],
+  command : [mecab_dict_index, '-d', '@OUTPUT@', '-o', '@OUTPUT@', '-f', 'UTF-8', '-t', 'UTF-8'],
+  install : true,
+  install_dir : libdir / 'mecab/dic')
