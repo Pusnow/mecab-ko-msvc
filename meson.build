@@ -1,7 +1,6 @@
 project('mecab-ko-msvc', 'cpp')
 
 
-cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
 version = '0.996/ko-0.9.2'
