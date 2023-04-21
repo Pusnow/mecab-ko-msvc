@@ -1,7 +1,10 @@
 project('mecab-ko-msvc', 'cpp')
 
 
+cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
+
+version = '0.996/ko-0.9.2'
 
 conf = configuration_data()
 deps = []
@@ -159,12 +162,20 @@ configure_file(output : 'config.h',
 add_global_arguments('-DHAVE_CONFIG_H', language : 'cpp')
 add_global_arguments('-DDIC_VERSION=102', language : 'cpp')
 add_global_arguments('-DPACKAGE="mecab"', language : 'cpp')
-add_global_arguments('-DVERSION="0.996/ko-0.9.2"', language : 'cpp')
+add_global_arguments('-DVERSION="@0@"'.format(version), language : 'cpp')
 
 prefixdir  = get_option('prefix')
+
 sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
+includedir = join_paths(prefixdir, get_option('includedir'))
+libdir = join_paths(prefixdir, get_option('libdir'))
+
 if host_machine.system() == 'windows'
     mecab_default_rc = 'c:\\\\Program Files\\\\mecab\\\\etc\\\\mecabrc'
+
+    add_global_arguments('-municode', language : 'cpp')
+    add_global_arguments('-DUNICODE', language : 'cpp')
+    add_global_arguments('-D_UNICOD', language : 'cpp')
 else
     mecab_default_rc = '@0@/mecabrc'.format(sysconfdir)
 endif
@@ -227,7 +238,7 @@ lib_sources = [
     'src/viterbi.cpp',
     'src/writer.cpp',
 ]
-libmecab = both_libraries('mecab', lib_sources, dependencies: deps)
+libmecab = both_libraries('mecab', lib_sources, dependencies: deps, install : true)
 
 
 programs = [
@@ -241,5 +252,18 @@ programs = [
 
 
 foreach program: programs
-    executable(program, 'src/@0@.cpp'.format(program), link_with: libmecab)
+    executable(program, 'src/@0@.cpp'.format(program), link_with: libmecab, install : true)
 endforeach
+
+
+mecabrc_conf = configuration_data()
+mecabrc_conf.set('prefix', prefixdir)
+configure_file(input : 'mecabrc.in',
+               output : 'mecabrc',
+               configuration : mecabrc_conf,
+               install: true,
+               install_dir: get_option('sysconfdir'))
+
+
+install_headers('src/mecab.h')
+install_man('man/mecab.1')
