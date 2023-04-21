@@ -1,9 +1,9 @@
-project('mecab-ko-msvc', 'cpp')
-
+project('mecab-ko-msvc', 'cpp',
+    version: '0.996.ko-0.9.2',
+)
 
 cxx = meson.get_compiler('cpp')
 
-version = '0.996/ko-0.9.2'
 
 conf = configuration_data()
 deps = []
@@ -161,7 +161,7 @@ configure_file(output : 'config.h',
 add_global_arguments('-DHAVE_CONFIG_H', language : 'cpp')
 add_global_arguments('-DDIC_VERSION=102', language : 'cpp')
 add_global_arguments('-DPACKAGE="mecab"', language : 'cpp')
-add_global_arguments('-DVERSION="@0@"'.format(version), language : 'cpp')
+add_global_arguments('-DVERSION="@0@"'.format(meson.project_version()), language : 'cpp')
 
 prefixdir  = get_option('prefix')
 
@@ -239,7 +239,6 @@ lib_sources = [
 ]
 libmecab = both_libraries('mecab', lib_sources, dependencies: deps, install : true)
 
-
 programs = [
     'mecab',
     'mecab-dict-index',
@@ -251,7 +250,7 @@ programs = [
 
 
 foreach program: programs
-    executable(program, 'src/@0@.cpp'.format(program), link_with: libmecab, install : true)
+    executable(program, 'src/@0@.cpp'.format(program), link_with: libmecab.get_static_lib(), install : true)
 endforeach
 
 
