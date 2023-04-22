@@ -170,7 +170,7 @@ includedir = join_paths(prefixdir, get_option('includedir'))
 libdir = join_paths(prefixdir, get_option('libdir'))
 
 if host_machine.system() == 'windows'
-    mecab_default_rc = 'c:\\\\Program Files\\\\mecab\\\\etc\\\\mecabrc'
+    mecab_default_rc = 'c:\\\\mecab\\\\etc\\\\mecabrc'
 
     add_global_arguments('-municode', language : 'cpp')
     add_global_arguments('-DUNICODE', language : 'cpp')
