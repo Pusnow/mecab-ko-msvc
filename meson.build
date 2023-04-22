@@ -168,6 +168,7 @@ prefixdir  = get_option('prefix')
 sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
 includedir = join_paths(prefixdir, get_option('includedir'))
 libdir = join_paths(prefixdir, get_option('libdir'))
+datadir = join_paths(prefixdir, get_option('datadir'))
 
 if host_machine.system() == 'windows'
     mecab_default_rc = 'c:\\\\mecab\\\\etc\\\\mecabrc'
@@ -280,4 +281,4 @@ mecab_ko_dic = custom_target('mecab_ko_dic',
   depends : [mecab_dict_index],
   command : [mecab_dict_index, '-d', '@OUTPUT@', '-o', '@OUTPUT@', '-f', 'UTF-8', '-t', 'UTF-8'],
   install : true,
-  install_dir : libdir / 'mecab/dic')
+  install_dir : datadir)
