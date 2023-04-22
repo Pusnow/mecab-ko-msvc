@@ -237,7 +237,15 @@ lib_sources = [
     'src/viterbi.cpp',
     'src/writer.cpp',
 ]
-libmecab = both_libraries('mecab', lib_sources, dependencies: deps, install : true)
+
+
+if host_machine.system() == 'windows'
+    libmecab_name = 'mecab'
+else
+    libmecab_name = 'libmecab'
+endif
+
+libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : true)
 
 
 mecab = executable('mecab', 'src/mecab.cpp', link_with: libmecab.get_static_lib(), install : true)
