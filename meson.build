@@ -240,9 +240,9 @@ lib_sources = [
 
 
 if host_machine.system() == 'windows'
-    libmecab_name = 'mecab'
-else
     libmecab_name = 'libmecab'
+else
+    libmecab_name = 'mecab'
 endif
 
 libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : true)
