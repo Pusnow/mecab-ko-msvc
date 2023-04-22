@@ -174,7 +174,10 @@ if host_machine.system() == 'windows'
 
     add_global_arguments('-municode', language : 'cpp')
     add_global_arguments('-DUNICODE', language : 'cpp')
-    add_global_arguments('-D_UNICOD', language : 'cpp')
+    add_global_arguments('-D_UNICODE', language : 'cpp')
+    if cxx.has_function_attribute('dllexport')
+        add_global_arguments('-DDLL_EXPORT', language : 'cpp')
+    endif
 else
     mecab_default_rc = '@0@/mecabrc'.format(sysconfdir)
 endif
