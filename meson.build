@@ -169,6 +169,7 @@ sysconfdir = join_paths(prefixdir, get_option('sysconfdir'))
 includedir = join_paths(prefixdir, get_option('includedir'))
 libdir = join_paths(prefixdir, get_option('libdir'))
 datadir = join_paths(prefixdir, get_option('datadir'))
+bindir = join_paths(prefixdir, get_option('bindir'))
 
 if host_machine.system() == 'windows'
     mecab_default_rc = 'c:\\\\mecab\\\\etc\\\\mecabrc'
@@ -273,6 +274,28 @@ install_headers('src/mecab.h')
 install_man('man/mecab.1')
 
 
+add_userdic_conf = configuration_data()
+add_userdic_conf.set('DIC_PATH', join_paths(datadir, 'mecab-ko-dic'))
+add_userdic_conf.set('BIN_PATH', bindir)
+if host_machine.system() == 'windows'
+    configure_file(input : 'tools/add-userdic.ps1',
+                   output : 'add-userdic.ps1',
+                   configuration : add_userdic_conf,
+                   install: true,
+                   install_dir: get_option('bindir'))
+else
+    configure_file(input : 'tools/add-userdic.sh',
+                   output : 'add-userdic.sh',
+                   configuration : add_userdic_conf,
+                   install: true,
+                   install_dir: get_option('bindir'))
+endif
+
+
+
+
+
+
 python_exe = find_program('python3', 'python')
 
 run_command(python_exe, '-m', 'zipfile', '-e', meson.source_root() / 'mecab-ko-dic.zip', meson.build_root(), check:true)
@@ -281,4 +304,4 @@ mecab_ko_dic = custom_target('mecab_ko_dic',
   depends : [mecab_dict_index],
   command : [mecab_dict_index, '-d', '@OUTPUT@', '-o', '@OUTPUT@', '-f', 'UTF-8', '-t', 'UTF-8'],
   install : true,
-  install_dir : datadir)
+  install_dir : get_option('datadir'))
