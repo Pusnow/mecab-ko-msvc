@@ -250,6 +250,8 @@ else
     libmecab_name = 'mecab'
 endif
 
+thread_dep = dependency('threads')
+deps += thread_dep
 libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : true)
 
 
