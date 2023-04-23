@@ -1,36 +1,32 @@
 # mecab-ko-msvc
 
-[![Build](https://github.com/Pusnow/mecab-ko-msvc/actions/workflows/build.yml/badge.svg)](https://github.com/Pusnow/mecab-ko-msvc/actions/workflows/build.yml)
+> 역사적인 이유로 mecab-ko-msvc이름을 사용하지만, Windows와 함께 macOS와 Linux도 지원합니다.
 
-mecab-ko-msvc는 mecab-ko를 Windows에서 사용하기 위해 Microsoft Visual C++ 로 빌드하는 프로젝트입니다.
+[![Build](https://github.com/Pusnow/mecab-ko-msvc/actions/workflows/build.yml/badge.svg)](https://github.com/Pusnow/mecab-ko-msvc/actions/workflows/build.yml)
 
 ## 설치
 
+### Windows
+
 * 실행 컴퓨터에 맞는 [최신버전](https://github.com/Pusnow/mecab-ko-msvc/releases/latest) 을 다운로드 받습니다. x86, x64 버전을 제공합니다.
 * `-r` 옵션과 `-d` 옵션을 사용할 경우는 문제가 없지만 최적의 환경을 위해 `C:\mecab` 폴더에 압축을 해제합니다.
-* 사전을 설치합니다. [mecab-ko-dic-msvc](https://github.com/Pusnow/mecab-ko-dic-msvc) 를 사용할 경우 프로젝트 페이지의 지시를 따르면 됩니다.
+* 사전을 설치합니다. mecab-ko-dic.zip을 다운로드하여 `C:\mecab\share\mecab-ko-dic` 폴더에 압축을 해제합니다.
+* 환경변수 `PATH`에 `C:\mecab\bin`을 추가하거나, `C:\mecab\bin\mecab.exe`를 실행합니다.
+
+### macOS / Linux
+
+* 실행 컴퓨터에 맞는 [최신버전](https://github.com/Pusnow/mecab-ko-msvc/releases/latest) 을 다운로드 받습니다. macOS (x86_64, arm64), Linux (x86_64, aarch64) 버전을 제공합니다.
+* `-r` 옵션과 `-d` 옵션을 사용할 경우는 문제가 없지만 최적의 환경을 위해 `/opt/mecab` 폴더에 압축을 해제합니다.
+  * 명령어: `sudo tar -C /opt -xvzf mecab-ko-<버전>.tar.gz`
+* 사전을 설치합니다. mecab-ko-dic.tar.gzp을 다운로드하여 `/opt/mecab/share/mecab-ko-dic` 폴더에 압축을 해제합니다.
+  * 명령어: `sudo tar -C /opt/mecab/share -xvzf mecab-ko-dic.tar.gz`
+* 환경변수 `PATH`에 `/opt/mecab/bin`을 추가하거나, `/opt/mecab/bin/mecab`를 실행합니다.
 
 ## 사용 정보
 
 * 현재 버전에서는 Windows cmd에서 출력이 제대로 되지 않습니다. `mecab.exe -o output.txt input.txt` 명령으로 파일로 출력하거나 [mecab-python-msvc](https://github.com/Pusnow/mecab-python-msvc) 를 이용해서 Python에서 사용해야 합니다. `input.txt` 파일은 메모장에서 저장할 경우 인코딩을 **UTF-8**으로 지정해야 합니다.
 * 메모장을 이용하여 저장하고 사용할 경우 출력의 앞 부분에 필요없는 `SY,*,*,*,*,*,*,*` 가 나타나게 됩니다. 이는 메모장이 파일을 저장할 경우 [BOM](https://ko.wikipedia.org/wiki/바이트_순서_표식)을 추가하기 때문입니다. 다른 에디터를 사용하여 BOM 없이 저장을 한다면 문제가 생기지 않습니다.
 
-
-## 빌드 정보
-
-* mecab-ko-msvc 는 [Appveyor](https://www.appveyor.com)를 이용합니다.
-* 빌드 과정은 [Appveyor 페이지](https://ci.appveyor.com/project/Pusnow/mecab-ko-msvc) 에 기록되어 있습니다.
-* 개인적으로 빌드를 하고 싶으신 분은 [appveyor.yml](https://github.com/Pusnow/mecab-ko-msvc/blob/master/appveyor.yml) 을 참고하시기 바랍니다.
-
-
-## 참고 자료
-* http://qiita.com/tobesan/items/6b6f3a025fdd177ef52a
-
-## 관련 프로젝트
-
-* [Mecab-Ko-Dic-MSVC](https://github.com/Pusnow/mecab-ko-dic-msvc)
-* [Mecab-Python-MSVC](https://github.com/Pusnow/mecab-python-msvc)
-* [Mecab-Java-MSVC](https://github.com/Pusnow/mecab-java-msvc)
 
 # mecab-ko 소개
 
