@@ -1,2 +1,7 @@
 option('build_static', type : 'boolean', value : false)
 option('build_dic', type : 'boolean', value : true)
+option('build_java', type : 'boolean', value : false)
+option('build_python', type : 'boolean', value : false)
+option('build_perl', type : 'boolean', value : false)
+option('build_ruby', type : 'boolean', value : false)
+option('build_csharp', type : 'boolean', value : false)

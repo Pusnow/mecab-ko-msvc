@@ -312,3 +312,40 @@ if get_option('build_dic')
     install : true,
     install_dir : get_option('datadir'))
 endif
+
+swig_args = []
+if get_option('build_java')
+    swig_args += ['-java', '-package', 'org.chasen.mecab']
+endif
+if get_option('build_python')
+    swig_args += ['-python']
+    python_conf = configuration_data()
+    python_conf.set('VERSION', meson.project_version())
+    python_conf.set('INCLUDE_PATH', includedir)
+    python_conf.set('LIB_PATH', libdir)
+    configure_file(input : 'swig/setup.py.in',
+                   output : 'setup.py',
+                   configuration : python_conf,
+                   install: true,
+                   install_dir: datadir / 'swig')
+
+endif
+if get_option('build_perl')
+    swig_args += ['-perl']
+endif
+if get_option('build_ruby')
+    swig_args += ['-ruby']
+endif
+if get_option('build_csharp')
+    swig_args += ['-csharp', '-namespace', 'MeCab']
+endif
+
+if swig_args.length() > 0
+    swig = find_program('swig')
+    swig_src = 'swig/MeCab.i'
+    run_command(swig, swig_args, '-c++', '-o', meson.build_root() /'mecab_wrap.cpp', '-outdir', meson.build_root(), swig_src, check:true)
+    install_data(meson.build_root()/'mecab_wrap.cpp', install_dir: datadir / 'swig')
+    if get_option('build_python')
+        install_data(meson.build_root()/'MeCab.py', install_dir: datadir / 'swig')
+    endif
+endif
