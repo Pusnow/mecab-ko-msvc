@@ -9,29 +9,117 @@ on:
     branches: [ "master" ]
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        arch:
-          - x64
-          - x86
+        include:
+          - { name: windows, os: windows-latest, arch: x64}
+          - { name: windows, os: windows-latest, arch: x86}
+          - { name: macos, os: macos-latest, arch: x86_64}
+          - { name: macos, os: macos-latest, arch: arm64}
+          - { name: linux, os: ubuntu-latest, arch: x86_64}
+          - { name: linux, os: ubuntu-latest, arch: aarch64, crossbuild: crossbuild-essential-arm64}
     steps:
       - uses: actions/checkout@v3
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{ matrix.arch }}
+        if: matrix.name == 'windows'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install Python Dependencies
+        run: pip install meson ninja
+      - name: Install Dependencies (Linux)
+        run: sudo apt-get update && sudo apt-get install ${{ matrix.crossbuild }} qemu-user-static
+        if: matrix.name == 'linux' && matrix.arch != 'x86_64'
+      - name: Configure (Windows)
+        run: meson setup --prefix=C:\mecab -Db_vscrt=static_from_buildtype -Dbuildtype=debugoptimized -Dbuild_dic=false builddir
+        working-directory: ${{ github.workspace }}
+        if: matrix.name == 'windows'
+      - name: Configure (macOS)
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_dic=false builddir
+        working-directory: ${{ github.workspace }}
+        if: matrix.name == 'macos' && matrix.arch == 'x86_64'
+      - name: Configure (Crossbuild macOS)
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized --cross-file=cross/${{ matrix.arch }}-darwin-clang.txt -Dbuild_dic=false builddir
+        working-directory: ${{ github.workspace }}
+        if: matrix.name == 'macos' && matrix.arch != 'x86_64'
+      - name: Configure (Linux)
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_static=true -Dbuild_dic=true builddir
+        working-directory: ${{ github.workspace }}
+        if: matrix.name == 'linux' && matrix.arch == 'x86_64'
+      - name: Configure (Crossbuild Linux)
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_static=true --cross-file=cross/${{ matrix.arch }}-linux-gnu.txt -Dbuild_dic=false builddir
+        working-directory: ${{ github.workspace }}
+        env:
+          QEMU_LD_PREFIX: /usr/${{ matrix.arch }}-linux-gnu/
+        if: matrix.name == 'linux' && matrix.arch != 'x86_64'
       - name: Build
-        run: nmake -f Makefile.${{ matrix.arch }}.msvc.in
-        working-directory: ${{ github.workspace }}/src
+        run: meson compile -C builddir
+        working-directory: ${{ github.workspace }}
+      - name: Install
+        run: meson install -C builddir --destdir ../out
+        working-directory: ${{ github.workspace }}
+      - name: 7z (dic)
+        run: 7z a mecab-ko-dic.zip mecab-ko-dic
+        working-directory: ${{ github.workspace }}/out/opt/mecab/share
+        if: matrix.name == 'linux' && matrix.arch == 'x86_64'
+      - name: tar (dic)
+        run: tar -cvzf mecab-ko-dic.tar.gz mecab-ko-dic
+        working-directory: ${{ github.workspace }}/out/opt/mecab/share
+        if: matrix.name == 'linux' && matrix.arch == 'x86_64'
+      - name: Upload a Dictionary Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: out/opt/mecab/share/mecab-ko-dic.zip
+        if: matrix.name == 'linux' && matrix.arch == 'x86_64'
+      - name: Release Dictionary
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/') && matrix.name == 'linux' && matrix.arch == 'x86_64'
+        with:
+          files: out/opt/mecab/share/mecab-ko-dic.zip
+      - name: Upload a Dictionary Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: out/opt/mecab/share/mecab-ko-dic.tar.gz
+        if: matrix.name != 'windows' && matrix.name == 'linux' && matrix.arch == 'x86_64'
+      - name: Release Dictionary
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/') && matrix.name == 'linux' && matrix.arch == 'x86_64'
+        with:
+          files: out/opt/mecab/share/mecab-ko-dic.tar.gz
+      - name: Remove Dictionary
+        run: rm -rf mecab-ko-dic mecab-ko-dic.zip mecab-ko-dic.tar.gz
+        working-directory: ${{ github.workspace }}/out/opt/mecab/share
+        if: matrix.name == 'linux' && matrix.arch == 'x86_64'
       - name: 7z
-        run: 7z a mecab-ko-msvc-${{ matrix.arch }}.zip *.dll *.exe *.lib mecab.h
-        working-directory: ${{ github.workspace }}/src
+        run: 7z a mecab-ko-${{ matrix.name }}-${{ matrix.arch }}.zip mecab
+        working-directory: ${{ github.workspace }}/out
+        if: matrix.name == 'windows'
+      - name: tar
+        run: tar -cvzf mecab-ko-${{ matrix.name }}-${{ matrix.arch }}.tar.gz mecab
+        working-directory: ${{ github.workspace }}/out/opt
+        if: matrix.name != 'windows'
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          path: src/mecab-ko-msvc-${{ matrix.arch }}.zip
+          path: out/mecab-ko-${{ matrix.name }}-${{ matrix.arch }}.zip
+        if: matrix.name == 'windows'
       - name: Release Artifact
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') && matrix.name == 'windows'
         with:
-          files: src/mecab-ko-msvc-${{ matrix.arch }}.zip
+          files: out/mecab-ko-${{ matrix.name }}-${{ matrix.arch }}.zip
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: out/opt/mecab-ko-${{ matrix.name }}-${{ matrix.arch }}.tar.gz
+        if: matrix.name != 'windows'
+      - name: Release Artifact
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/') && matrix.name != 'windows'
+        with:
+          files: out/opt/mecab-ko-${{ matrix.name }}-${{ matrix.arch }}.tar.gz
+          
