@@ -1,0 +1,18 @@
+[host_machine]
+system = 'darwin'
+cpu_family = 'aarch64'
+cpu = 'arm64'
+endian = 'little'
+
+[binaries]
+c = ['clang']
+cpp = ['clang++']
+ar = ['ar']
+strip = ['strip']
+pkgconfig = ['pkg-config']
+
+[built-in options]
+c_args = ['-arch', 'arm64']
+cpp_args = ['-arch', 'arm64']
+c_link_args = ['-arch', 'arm64']
+cpp_link_args = ['-arch', 'arm64']
