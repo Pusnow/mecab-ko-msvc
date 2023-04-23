@@ -323,7 +323,17 @@ if build_java or build_python or build_perl or build_ruby or build_csharp
     swig = find_program('swig')
     swig_src = 'swig/MeCab.i'
     if build_java
-
+        run_command(swig, '-java', '-package', 'org.chasen.mecab', '-c++', '-o', meson.build_root() /'mecab_java.cpp', '-outdir', meson.build_root(), swig_src, check:true)
+        install_data(meson.build_root()/'mecab_java.cpp', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'DictionaryInfo.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'Lattice.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'MeCabConstants.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'MeCab.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'MeCabJNI.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'Model.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'Node.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'Path.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.build_root()/'Tagger.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
     endif
     if build_python
         python_conf = configuration_data()
