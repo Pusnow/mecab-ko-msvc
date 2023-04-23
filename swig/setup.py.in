@@ -7,7 +7,7 @@ setup(name = "mecab-ko-msvc-python",
 	py_modules=["MeCab"],
 	ext_modules = [
 		Extension("_MeCab",
-			["mecab_wrap.cpp",],
+			["mecab_python.cpp",],
 			include_dirs=["@INCLUDE_PATH@"],
 			library_dirs=["@LIB_PATH@"],
 			libraries=["@LIB_NAME@"])
