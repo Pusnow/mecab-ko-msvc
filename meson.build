@@ -1,5 +1,5 @@
 project('mecab-ko-msvc', 'cpp',
-    version: '0.996.ko-0.9.2',
+    version: '0.997',
 )
 
 
@@ -323,6 +323,7 @@ if get_option('build_python')
     python_conf.set('VERSION', meson.project_version())
     python_conf.set('INCLUDE_PATH', includedir)
     python_conf.set('LIB_PATH', libdir)
+    python_conf.set('LIB_NAME',libmecab_name)
     configure_file(input : 'swig/setup.py.in',
                    output : 'setup.py',
                    configuration : python_conf,
