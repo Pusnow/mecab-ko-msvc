@@ -2,6 +2,7 @@ project('mecab-ko-msvc', 'cpp',
     version: '0.996.ko-0.9.2',
 )
 
+
 cxx = meson.get_compiler('cpp')
 
 
@@ -253,14 +254,21 @@ endif
 thread_dep = dependency('threads')
 deps += thread_dep
 libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : true)
+libmecab_static = libmecab.get_static_lib()
+
+if get_option('build_static')
+    flags = ['-static']
+else
+    flags = []
+endif
 
 
-mecab = executable('mecab', 'src/mecab.cpp', link_with: libmecab.get_static_lib(), install : true)
-mecab_dict_index = executable('mecab-dict-index', 'src/mecab-dict-index.cpp', link_with: libmecab.get_static_lib(), install : true)
-mecab_dict_gen = executable('mecab-dict-gen', 'src/mecab-dict-gen.cpp', link_with: libmecab.get_static_lib(), install : true)
-mecab_cost_train = executable('mecab-cost-train', 'src/mecab-cost-train.cpp', link_with: libmecab.get_static_lib(), install : true)
-mecab_system_eval = executable('mecab-system-eval', 'src/mecab-system-eval.cpp', link_with: libmecab.get_static_lib(), install : true)
-mecab_test_gen = executable('mecab-test-gen', 'src/mecab-test-gen.cpp', link_with: libmecab.get_static_lib(), install : true)
+mecab = executable('mecab', 'src/mecab.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
+mecab_dict_index = executable('mecab-dict-index', 'src/mecab-dict-index.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
+mecab_dict_gen = executable('mecab-dict-gen', 'src/mecab-dict-gen.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
+mecab_cost_train = executable('mecab-cost-train', 'src/mecab-cost-train.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
+mecab_system_eval = executable('mecab-system-eval', 'src/mecab-system-eval.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
+mecab_test_gen = executable('mecab-test-gen', 'src/mecab-test-gen.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
 
 
 mecabrc_conf = configuration_data()
@@ -292,9 +300,6 @@ else
                    install: true,
                    install_dir: get_option('bindir'))
 endif
-
-
-
 
 
 
