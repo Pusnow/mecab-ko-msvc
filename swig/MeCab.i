@@ -13,6 +13,14 @@
 #endif
 %}
 
+%pythoncode %{
+import sys
+import os
+
+if "MECABRC" not in os.environ and os.path.exists(os.path.join(sys.prefix,"mecabrc")):
+  os.putenv("MECABRC", os.path.join(sys.prefix,"mecabrc"))
+%}
+
 %newobject surface;
 %newobject MeCab::Model::createLattice;
 %newobject MeCab::Model::createTagger;

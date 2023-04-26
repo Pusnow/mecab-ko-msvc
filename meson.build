@@ -1,6 +1,6 @@
 project('mecab-ko-msvc', 'cpp',
     version: '0.997',
-    meson_version: '>=0.61.0',
+    meson_version: '>=0.63.0',
 )
 
 
@@ -187,6 +187,7 @@ if host_machine.system() == 'windows'
 else
     mecab_default_rc = '@0@/mecabrc'.format(sysconfdir)
 endif
+
 add_global_arguments('-DMECAB_DEFAULT_RC="@0@"'.format(mecab_default_rc), language : 'cpp')
 
 
@@ -254,9 +255,11 @@ else
     libmecab_name = 'mecab'
 endif
 
+building_pip = get_option('building_pip')
+install_lib = not building_pip
 thread_dep = dependency('threads')
 deps += thread_dep
-libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : true)
+libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : install_lib)
 libmecab_static = libmecab.get_static_lib()
 
 if get_option('build_static')
@@ -273,18 +276,19 @@ mecab_cost_train = executable('mecab-cost-train', 'src/mecab-cost-train.cpp', li
 mecab_system_eval = executable('mecab-system-eval', 'src/mecab-system-eval.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
 mecab_test_gen = executable('mecab-test-gen', 'src/mecab-test-gen.cpp', link_with: libmecab_static, install : true, c_args : flags, cpp_args : flags, link_args : flags)
 
-
 mecabrc_conf = configuration_data()
-mecabrc_conf.set('prefix', prefixdir)
+mecabrc_conf.set('datadir', building_pip ? '$(rcpath)' : datadir)
 configure_file(input : 'mecabrc.in',
-               output : 'mecabrc',
-               configuration : mecabrc_conf,
-               install: true,
-               install_dir: get_option('sysconfdir'))
+            output : 'mecabrc',
+            configuration : mecabrc_conf,
+            install: true,
+            install_dir: building_pip ? get_option('datadir') : get_option('sysconfdir'))
 
+if not building_pip
+    install_headers('src/mecab.h')
+    install_man('man/mecab.1')
+endif
 
-install_headers('src/mecab.h')
-install_man('man/mecab.1')
 
 
 add_userdic_conf = configuration_data()
@@ -317,7 +321,7 @@ if get_option('build_dic')
 endif
 
 build_java = get_option('build_java')
-build_python = get_option('build_python')
+build_python = get_option('build_python') or building_pip
 build_perl = get_option('build_perl')
 build_ruby = get_option('build_ruby')
 build_csharp = get_option('build_csharp')
@@ -326,17 +330,17 @@ if build_java or build_python or build_perl or build_ruby or build_csharp
     swig = find_program('swig')
     swig_src = 'swig/MeCab.i'
     if build_java
-        run_command(swig, '-java', '-package', 'org.chasen.mecab', '-c++', '-o', meson.build_root() /'mecab_java.cpp', '-outdir', meson.build_root(), swig_src, check:true)
-        install_data(meson.build_root()/'mecab_java.cpp', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'DictionaryInfo.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'Lattice.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'MeCabConstants.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'MeCab.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'MeCabJNI.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'Model.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'Node.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'Path.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
-        install_data(meson.build_root()/'Tagger.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        run_command(swig, '-java', '-package', 'org.chasen.mecab', '-c++', '-o', meson.project_build_root() /'mecab_java.cpp', '-outdir', meson.project_build_root(), swig_src, check:true)
+        install_data(meson.project_build_root()/'mecab_java.cpp', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'DictionaryInfo.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'Lattice.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'MeCabConstants.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'MeCab.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'MeCabJNI.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'Model.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'Node.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'Path.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
+        install_data(meson.project_build_root()/'Tagger.java', install_dir: datadir / 'mecab-ko-msvc-java/org/chasen/mecab')
     endif
     if build_python
         python_conf = configuration_data()
@@ -344,14 +348,9 @@ if build_java or build_python or build_perl or build_ruby or build_csharp
         python_conf.set('INCLUDE_PATH', includedir)
         python_conf.set('LIB_PATH', libdir)
         python_conf.set('LIB_NAME',libmecab_name)
-        configure_file(input : 'swig/setup.py.in',
-                    output : 'setup.py',
-                    configuration : python_conf,
-                    install: true,
-                    install_dir: datadir / 'mecab-ko-msvc-python')
-        run_command(swig, '-python', '-c++', '-o', meson.build_root() /'mecab_python.cpp', '-outdir', meson.build_root(), swig_src, check:true)
-        install_data(meson.build_root()/'mecab_python.cpp', install_dir: datadir / 'mecab-ko-msvc-python')
-        install_data(meson.build_root()/'MeCab.py', install_dir: datadir / 'mecab-ko-msvc-python')
+        run_command(swig, '-python', '-c++', '-o', meson.project_build_root() /'mecab_python.cpp', '-outdir', meson.project_build_root(), swig_src, check:true)
+        py.install_sources(meson.project_build_root()/'MeCab.py', pure: false)
+        py.extension_module('_MeCab', meson.project_build_root() /'mecab_python.cpp', link_with:  libmecab_static, include_directories : 'src/', install: true)
     endif
 
 endif

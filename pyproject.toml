@@ -1,0 +1,35 @@
+[build-system]
+requires = [
+    "meson >= 1.0.0",
+    "meson-python >= 0.12.0",
+]
+build-backend = "mesonpy"
+
+[project]
+name = "mecab-ko-msvc"
+version = "0.997"
+description = "Mecab-ko-msvc build"
+readme = "README.md"
+maintainers = [
+    { name = "Wonsup Yoon", email = "wonsup@pusnow.com" },
+]
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: C",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+"Documentation" = "https://github.com/Pusnow/mecab-ko-msvc/"
+"Source" = "https://github.com/Pusnow/mecab-ko-msvc/"
+"Issue Tracker" = "https://github.com/Pusnow/mecab-ko-msvcissues"
+
+[tool.meson-python.args]
+setup = ['-Dbuilding_pip=true']
