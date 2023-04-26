@@ -6,11 +6,7 @@ sentence = "무궁화꽃이피었습니다."
 
 try:
     print(MeCab.VERSION)
-    print("0")
-    print(dir(MeCab))
-    print(dir(MeCab.Tagger))
     t = MeCab.Tagger()
-    print("1", t)
     print(t.parse(sentence))
 
     m = t.parseToNode(sentence)

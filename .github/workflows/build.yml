@@ -35,23 +35,23 @@ jobs:
         run: sudo apt-get update && sudo apt-get install ${{ matrix.crossbuild }} qemu-user-static
         if: matrix.name == 'linux' && matrix.arch != 'x86_64'
       - name: Configure (Windows)
-        run: meson setup --prefix=C:\mecab -Db_vscrt=static_from_buildtype -Dbuildtype=debugoptimized -Dbuild_dic=false -Dbuild_python=true -Dbuild_java=true builddir
+        run: meson setup --prefix=C:\mecab -Db_vscrt=static_from_buildtype -Dbuildtype=debugoptimized -Dbuild_dic=false builddir
         working-directory: ${{ github.workspace }}
         if: matrix.name == 'windows'
       - name: Configure (macOS)
-        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_dic=false -Dbuild_python=true -Dbuild_java=true builddir
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_dic=false builddir
         working-directory: ${{ github.workspace }}
         if: matrix.name == 'macos' && matrix.arch == 'x86_64'
       - name: Configure (Crossbuild macOS)
-        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized --cross-file=cross/${{ matrix.arch }}-darwin-clang.txt -Dbuild_dic=false -Dbuild_python=true -Dbuild_java=true builddir
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized --cross-file=cross/${{ matrix.arch }}-darwin-clang.txt -Dbuild_dic=false builddir
         working-directory: ${{ github.workspace }}
         if: matrix.name == 'macos' && matrix.arch != 'x86_64'
       - name: Configure (Linux)
-        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_static=true -Dbuild_dic=true -Dbuild_python=true -Dbuild_java=true builddir
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_static=true -Dbuild_dic=true builddir
         working-directory: ${{ github.workspace }}
         if: matrix.name == 'linux' && matrix.arch == 'x86_64'
       - name: Configure (Crossbuild Linux)
-        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_static=true --cross-file=cross/${{ matrix.arch }}-linux-gnu.txt -Dbuild_dic=false -Dbuild_python=true -Dbuild_java=true builddir
+        run: meson setup --prefix=/opt/mecab -Dbuildtype=debugoptimized -Dbuild_static=true --cross-file=cross/${{ matrix.arch }}-linux-gnu.txt -Dbuild_dic=false builddir
         working-directory: ${{ github.workspace }}
         env:
           QEMU_LD_PREFIX: /usr/${{ matrix.arch }}-linux-gnu/
