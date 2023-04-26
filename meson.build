@@ -305,9 +305,9 @@ else
 endif
 
 
+py = import('python').find_installation()
 if get_option('build_dic')
-    python_exe = find_program('python3', 'python')
-    run_command(python_exe, '-m', 'zipfile', '-e', meson.project_source_root() / 'mecab-ko-dic.zip', meson.project_build_root(), check:true)
+    run_command(py, '-m', 'zipfile', '-e', meson.project_source_root() / 'mecab-ko-dic.zip', meson.project_build_root(), check:true)
     mecab_ko_dic = custom_target('mecab_ko_dic',
     output : 'mecab-ko-dic',
     depends : [mecab_dict_index],
