@@ -1,5 +1,6 @@
 project('mecab-ko-msvc', 'cpp',
     version: '0.997',
+    meson_version: '>=0.61.0',
 )
 
 
@@ -122,7 +123,9 @@ endif
 words_bigendian = host_machine.endian() == 'big'
 conf.set('WORDS_BIGENDIAN', words_bigendian ? 1 : false)
 
-iconvdeps = cxx.find_library('iconv', required: false)
+
+
+iconvdeps = dependency('iconv', required: false)
 if iconvdeps.found()
     deps += iconvdeps
 endif
@@ -304,7 +307,7 @@ endif
 
 if get_option('build_dic')
     python_exe = find_program('python3', 'python')
-    run_command(python_exe, '-m', 'zipfile', '-e', meson.source_root() / 'mecab-ko-dic.zip', meson.build_root(), check:true)
+    run_command(python_exe, '-m', 'zipfile', '-e', meson.project_source_root() / 'mecab-ko-dic.zip', meson.project_build_root(), check:true)
     mecab_ko_dic = custom_target('mecab_ko_dic',
     output : 'mecab-ko-dic',
     depends : [mecab_dict_index],
