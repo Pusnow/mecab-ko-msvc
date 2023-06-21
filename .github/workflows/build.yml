@@ -196,6 +196,7 @@ jobs:
           path: ./builddir/dist/*.whl
 
   upload_python_pkgs:
+    name: Upload Python Packages
     needs: [build_sdist, build_wheels, build_dic_wheel]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
