@@ -1,5 +1,5 @@
 project('mecab-ko-msvc', 'cpp',
-    version: '0.997',
+    version: '0.998',
     meson_version: '>=0.63.0',
 )
 

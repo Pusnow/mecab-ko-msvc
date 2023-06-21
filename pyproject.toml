@@ -7,7 +7,7 @@ build-backend = "mesonpy"
 
 [project]
 name = "mecab-ko-msvc"
-version = "0.997"
+version = "0.998"
 description = "Mecab-ko-msvc build"
 readme = "README.md"
 maintainers = [
