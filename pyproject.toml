@@ -32,4 +32,4 @@ classifiers = [
 "Issue Tracker" = "https://github.com/Pusnow/mecab-ko-msvcissues"
 
 [tool.meson-python.args]
-setup = ['-Dbuilding_pip=true']
+setup = ['-Dbuilding_pip=true', '-Dbuild_dic=false']

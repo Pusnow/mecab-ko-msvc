@@ -257,6 +257,7 @@ endif
 
 building_pip = get_option('building_pip')
 install_lib = not building_pip
+install_dic = not building_pip
 thread_dep = dependency('threads')
 deps += thread_dep
 libmecab = both_libraries(libmecab_name, lib_sources, dependencies: deps, install : install_lib)
@@ -282,7 +283,7 @@ configure_file(input : 'mecabrc.in',
             output : 'mecabrc',
             configuration : mecabrc_conf,
             install: true,
-            install_dir: building_pip ? get_option('datadir') : get_option('sysconfdir'))
+            install_dir: building_pip ? '{py_platlib}' : get_option('sysconfdir'))
 
 if not building_pip
     install_headers('src/mecab.h')
@@ -310,14 +311,21 @@ endif
 
 
 py = import('python').find_installation()
-if get_option('build_dic')
+if get_option('build_dic') or get_option('building_pip_dic')
     run_command(py, '-m', 'zipfile', '-e', meson.project_source_root() / 'mecab-ko-dic.zip', meson.project_build_root(), check:true)
     mecab_ko_dic = custom_target('mecab_ko_dic',
     output : 'mecab-ko-dic',
     depends : [mecab_dict_index],
     command : [mecab_dict_index, '-d', '@OUTPUT@', '-o', '@OUTPUT@', '-f', 'UTF-8', '-t', 'UTF-8'],
-    install : true,
+    install : install_dic,
     install_dir : get_option('datadir'))
+
+endif
+if get_option('building_pip_dic')
+    dic_conf_data = configuration_data()
+    configure_file(input : 'pyproject-dic.toml',
+                output : 'pyproject.toml',
+                configuration : dic_conf_data)
 endif
 
 build_java = get_option('build_java')

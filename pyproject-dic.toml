@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mecab-ko-dic-msvc"
+version = "0.997"
+description = "Mecab-ko-dic-msvc build"
+readme = "../README.md"
+maintainers = [
+    { name = "Wonsup Yoon", email = "wonsup@pusnow.com" },
+]
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+"Documentation" = "https://github.com/Pusnow/mecab-ko-msvc/"
+"Source" = "https://github.com/Pusnow/mecab-ko-msvc/"
+"Issue Tracker" = "https://github.com/Pusnow/mecab-ko-msvcissues"
+
+[tool.hatch.build]
+artifacts = [
+  "mecab-ko-dic/*",
+]

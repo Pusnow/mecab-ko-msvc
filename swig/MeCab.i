@@ -14,11 +14,11 @@
 %}
 
 %pythoncode %{
-import sys
+import sysconfig
 import os
-
-if "MECABRC" not in os.environ and os.path.exists(os.path.join(sys.prefix,"mecabrc")):
-  os.putenv("MECABRC", os.path.join(sys.prefix,"mecabrc"))
+MECABRC_DEFAULT_PATH = os.path.join(sysconfig.get_paths()["platlib"],"mecabrc")
+if "MECABRC" not in os.environ and os.path.exists(MECABRC_DEFAULT_PATH):
+  os.putenv("MECABRC", MECABRC_DEFAULT_PATH)
 %}
 
 %newobject surface;
