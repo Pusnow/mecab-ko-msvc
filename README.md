@@ -22,6 +22,22 @@
   * 명령어: `sudo tar -C /opt/mecab/share -xvzf mecab-ko-dic.tar.gz`
 * 환경변수 `PATH`에 `/opt/mecab/bin`을 추가하거나, `/opt/mecab/bin/mecab`를 실행합니다.
 
+### Python
+
+* pip를 이용하여 Python 버전을 설치할 수 있습니다.
+  * 명령어: `pip3 install mecab-ko-msvc mecab-ko-dic-msvc`
+* 다음과 같이 Python 패키지에 내장된 사전을 사용할 수 있습니다.
+
+```bash
+$ python3
+Python 3.11.3 (main, Jun  5 2023, 09:32:32) [GCC 13.1.1 20230429] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import MeCab
+>>> tagger = MeCab.Tagger()
+>>> tagger.parse("무궁화꽃이피었습니다.")
+'무궁화\tNNG,*,F,무궁화,Compound,*,*,무궁/NNG/*+화/NNG/*\n꽃\tNNG,*,T,꽃,*,*,*,*\n이\tJKS,*,F,이,*,*,*,*\n피\tVV,*,F,피,*,*,*,*\n었\tEP,*,T,었,*,*,*,*\n습니다\tEF,*,F,습니다,*,*,*,*\n.\tSF,*,*,*,*,*,*,*\nEOS\n'
+```
+
 ## 사용 정보
 
 * 현재 버전에서는 Windows cmd에서 출력이 제대로 되지 않습니다. `mecab.exe -o output.txt input.txt` 명령으로 파일로 출력하거나 [mecab-python-msvc](https://github.com/Pusnow/mecab-python-msvc) 를 이용해서 Python에서 사용해야 합니다. `input.txt` 파일은 메모장에서 저장할 경우 인코딩을 **UTF-8**으로 지정해야 합니다.
