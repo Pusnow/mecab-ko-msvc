@@ -128,15 +128,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install Python Dependencies
+        run: pip install meson ninja build
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.13.1
-        env:
-          CIBW_ARCHS: ${{ matrix.cibw_arch }}
+      - name: Build sdist
+        run: python -m build --sdist .
 
       - uses: actions/upload-artifact@v3
         with:
-          path: ./wheelhouse/*.whl
+          name: python-artifact
+          path: ./dist/*.tar.gz
   build_wheels:
     name: Build wheels on ${{ matrix.os }} - ${{ matrix.cibw_arch }}
     runs-on: ${{ matrix.os }}
@@ -150,19 +155,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - name: Install Python Dependencies
-        run: pip install meson ninja build
 
-      - name: Build sdist
-        run: python -m build --sdist .
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{ matrix.msvc_arch }}
+        if: matrix.name == 'windows'
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.13.1
+        env:
+          CIBW_ARCHS: ${{ matrix.cibw_arch }}
 
       - uses: actions/upload-artifact@v3
         with:
-          path: ./dist/*.tar.gz
+          name: python-artifact
+          path: ./wheelhouse/*.whl
   build_dic_wheel:
     name: Build dic wheel
     runs-on: ubuntu-latest
@@ -185,5 +192,21 @@ jobs:
         working-directory: ${{ github.workspace }}/builddir
       - uses: actions/upload-artifact@v3
         with:
+          name: python-artifact
           path: ./builddir/dist/*.whl
+
+  upload_python_pkgs:
+    needs: [build_sdist, build_wheels, build_dic_wheel]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: python-artifact
+        path: dist
+
+    - uses: pypa/gh-action-pypi-publish@v1.5.0
+      with:
+        user: ${{ secrets.pypi_user }}
+        password: ${{ secrets.pypi_password }}
 
