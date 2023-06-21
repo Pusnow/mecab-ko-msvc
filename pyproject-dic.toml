@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mecab-ko-dic-msvc"
-version = "0.998"
+version = "0.999"
 description = "Mecab-ko-dic-msvc build"
 readme = "../README.md"
 maintainers = [
